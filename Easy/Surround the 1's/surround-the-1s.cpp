@@ -8,38 +8,31 @@ using namespace std;
 class Solution {
 public:
     int Count(vector<vector<int> >& matrix) {
-         int n = matrix.size();
-        int m = matrix[0].size();
-        int ans = 0;
-        for(int i = 0; i<n; i++){
-            for(int j = 0; j<m; j++){
-                int count = 0;
-                if(matrix[i][j] == 1){
-                   for(int k = -1; k<=1; k++){
-                    for(int l = -1; l<=1; l++){
-                        int nrow = i+k;
-                        int ncol = j+l;
-                        if(nrow >=0 && nrow < n && ncol >= 0 && ncol<m && matrix[nrow][ncol] == 0){
-                            count++;
-                        }
-                    }
-                    
-                   }
-                   if(count % 2 == 0){
-                       if(count != 0){
-                          ans++; 
-                       }
-                        
-                    } 
-                    
-                }
-                
-            }
-        }
-        
-        return ans;
+     int r=matrix.size();
+     int c=matrix[0].size();
+     int count=0,ans=0;
+     for(int i=0;i<r;i++){
+         for(int j=0;j<c;j++){
+           if(matrix[i][j]==1){
+            count=0;
+            if(i-1>=0 && matrix[i-1][j]==0){count++;} //up
+            if(j+1<c && matrix[i][j+1]==0){count++;} //right
+            if(i+1<r && matrix[i+1][j]==0){count++;} //down
+            if(j-1>=0 && matrix[i][j-1]==0){count++;} //left
+            
+            if(i-1>=0 && j-1>=0 && matrix[i-1][j-1]==0){count++;} //up left
+            if(i-1>=0 && j+1<c && matrix[i-1][j+1]==0){count++;} //up right
+            if(i+1<r && j-1>=0 && matrix[i+1][j-1]==0){count++;} //down left
+            if(i+1<r && j+1<c && matrix[i+1][j+1]==0){count++;} //down right
+            
+            if(count !=0 && count%2==0){ans++;}
+           }
+         }
+     }
+     return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 int main(){
