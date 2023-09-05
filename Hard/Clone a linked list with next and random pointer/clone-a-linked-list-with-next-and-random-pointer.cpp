@@ -23,32 +23,34 @@ class Solution
     public:
     Node *copyList(Node *head)
     {
-     unordered_map<Node*,Node*>map;
-        Node* nhead=NULL;
-        Node* ncurr=NULL;
-        Node* curr=head;
-        while(curr !=NULL){
-          Node* node=new Node(curr->data);
-          if(nhead==NULL){
-              nhead=node;
-              ncurr=nhead;
-          }
-          else{
-              ncurr->next=node;
-              ncurr=ncurr->next;
-          }
-         map[curr]=ncurr;
-         curr=curr->next;
-        }
-        //copy random pointer
-        curr=head;
-        ncurr=nhead;
-        while(ncurr !=NULL){
-         ncurr->arb=curr->arb? map[curr->arb]: NULL;
-         ncurr=ncurr->next;
-         curr=curr->next;
-        }
-        return nhead;
+      //insert new node
+      Node* curr=head;
+      while(curr !=NULL){
+          Node* newnode=new Node(curr->data);
+          newnode->next=curr->next;
+          curr->next=newnode;
+          curr=curr->next->next;
+      }
+      //set random pointer of new nodes
+      curr=head;
+      while(curr !=NULL){
+          if(curr->arb !=NULL)
+          {curr->next->arb=curr->arb->next;}
+          curr=curr->next->next;
+      }
+      //remove orginal fro duplicate
+    curr = head;
+    Node* nhead = head->next;
+    Node* copy = nhead;
+    while (copy->next != NULL) {
+        curr->next = curr->next->next;
+        copy->next = copy->next->next;
+        curr = curr->next;
+        copy = copy->next;
+    }
+    curr->next = NULL;
+    copy->next = NULL;
+    return nhead;
     }
 
 };
