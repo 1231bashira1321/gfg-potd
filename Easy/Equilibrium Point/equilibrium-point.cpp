@@ -10,25 +10,18 @@ class Solution{
     // a: input array
     // n: size of array
     int equilibriumPoint(long long a[], int n) {
-    
-        // Your code here
-         long long sum=0;
-        for(int i=0;i<n;i++){
-            sum+=a[i];
-        }
-        long long left=0;
-        long long right = 0;
-        for(int i=1;i<n;i++){
-            left+= a[i-1];
-            right= sum-left-a[i];
-            if(left==right){
-                return i+1;
-            }
-        }
-        if(left==right){
-            return 1;
-        }
-        return -1;
+    int rightsum=0;
+    for(int i=0;i<n;i++){
+     rightsum+=a[i];}
+     
+    int leftsum=0;
+    for(int i=0;i<n;i++){
+     rightsum-=a[i];
+     if(leftsum==rightsum){return i+1;}
+     leftsum+=a[i];
+     }
+     if(leftsum==rightsum){return n;}
+     return -1;
     }
 
 };
