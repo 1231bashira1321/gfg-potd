@@ -6,18 +6,12 @@ using namespace std;
 class Solution {
   public:
     int isPerfectNumber(long long N) {
-     long sum=1;
-        if (N==1) return 0;
-        for(long long i=2;i<=sqrt(N);i++)
-        {
-            if(N%i==0)
-          {
-            sum+=i;
-            sum+=N/i;
-          }
-        }
-        if(sum==N) return 1;
-        else return 0;
+     if(N==1){return 0;}
+     long long ans=1;
+     for(int i=2;i<sqrt(N);i++){
+         if(N%i==0){ans=ans+i+N/i;}
+     }
+     return ans==N;
     }
 };
 
