@@ -7,38 +7,27 @@ using namespace std;
 class Solution {
   public:
     vector<int> maxCombinations(int N, int K, vector<int> &A, vector<int> &B) {
-        // code here
-        vector<int> ans;
-        sort(A.begin(),A.end());
-        sort(B.begin(),B.end());
-        
-        priority_queue<pair<int, pair<int, int>>> pq;
-        set<pair<int, int>> st;
-        pq.push(make_pair(A[N-1] + B[N-1], make_pair(N-1, N-1)));
-        st.insert(make_pair(N-1, N-1));
-        
-        // iterate upto k
-        for(int cnt = 0; cnt < K; cnt++){
-            pair<int, pair<int, int>> temp = pq.top();
-            pq.pop();
-            ans.push_back(temp.first);
-            int i = temp.second.first;
-            int j = temp.second.second;
-            
-            int sum = A[i-1] + B[j];
-            pair<int ,int >tep1 = make_pair(i-1,j);
-            if(st.find(tep1) ==st.end()){
-                pq.push(make_pair(sum, tep1));
-                st.insert(tep1);
-            }
-            sum = A[i] + B[j-1];
-            tep1 = make_pair(i, j-1);   
-            if(st.find(tep1) ==st.end()){
-                pq.push(make_pair(sum, tep1));
-                st.insert(tep1);
-            }
-        }
-        return ans;
+    vector<int> ans;
+    priority_queue<pair<int,pair<int,int>>> pq;
+    set <pair<int,int>> st;
+    sort(A.begin(),A.end(),greater<int>());
+    sort(B.begin(),B.end(),greater<int>());
+    pq.push({A[0]+B[0],{0,0}});
+    st.insert({0,0});
+    for(int l=0;l<K;l++){
+     auto sum=pq.top().first;
+     auto i=pq.top().second.first;
+     auto j=pq.top().second.second;
+     pq.pop();
+     ans.push_back(sum);
+     if(st.find({i+1,j})==st.end()){
+      pq.push({A[i+1]+B[j],{i+1,j}});
+      st.insert({i+1,j});}
+     if(st.find({i,j+1})==st.end()){
+      pq.push({A[i]+B[j+1],{i,j+1}});
+      st.insert({i,j+1});}
+    }
+    return ans;
     }
 };
 
