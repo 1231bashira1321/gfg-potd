@@ -3,29 +3,74 @@
 using namespace std;
 
 // } Driver Code Ends
+
 class Solution
-{
+{   int get_parent(int x,int parent[]){
+	  if (parent[x]==x){return x;}
+	  else{
+	      parent[x]=get_parent(parent[x],parent);
+	      return parent[x];
+	  }
+	}
+	
+	void Union(int p1,int p2,int rank[],int parent[]){
+	  if (rank[p1]>rank[p2]){
+	      parent[p2]=p1;
+	  }
+	  else if(rank[p2]>rank[p1]){
+	      parent[p1]=p2;
+	  }
+	  else{
+	      parent[p1]=p2;
+	      rank[p2]++;
+	  }
+	}
+	
 	public:
-    int spanningTree(int V, vector<vector<int>> adj[])
-    { priority_queue <pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-      int visited[V];
-      memset(visited,-1,sizeof(visited));
-      int min_wt=0;
-      pq.push({0,0});
-      while(!pq.empty()){
-       auto it=pq.top();
-       int wt=it.first;
-       int node=it.second;
-       pq.pop();
-       if(visited[node]==-1){
-           min_wt+=wt;
-           visited[node]=0;
-           for(auto i : adj[node]){
-            pq.push({i[1],i[0]});
-           }
-       }
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[]){
+     int* parent=new int[V];
+     int* rank=new int[V];
+      for(int i=0;i<V;i++){
+          rank[i]=0;
+          parent[i]=i;}
+      vector<pair<int,pair<int,int>>> edges;
+      for(int i=0;i<V;i++){
+        for(int j=0;j<adj[i].size();j++){
+            int u=i;
+            int v=adj[i][j][0];
+            int wt=adj[i][j][1];
+            edges.push_back({wt,{u,v}});
+        }
       }
-       return min_wt;
+     sort(edges.begin(),edges.end());
+     int index=0;
+     int mst_wt=0;
+     while(index !=edges.size()){
+        int wt=edges[index].first;
+        int u=edges[index].second.first;
+        int v=edges[index].second.second;
+        int pu=get_parent(u,parent);
+        int pv=get_parent(v,parent);
+        if(pu !=pv){
+         mst_wt+=wt;
+         Union(pu,pv,rank,parent);
+        }
+        // if(pu !=pv){
+        //  mst_wt+=wt;
+        //  if (rank[pu]==rank[pv]){
+        //      parent[pv]==pu;
+        //      pu++;}
+        //  else if(rank[pu]>rank[pv]){
+        //      parent[pv]=pu;}
+        //  else{parent[pu]=pv;}
+        // }
+        index++;}
+        
+    //  deallocation
+     delete []parent;
+     delete []rank;
+     return mst_wt;
     }
 };
 
