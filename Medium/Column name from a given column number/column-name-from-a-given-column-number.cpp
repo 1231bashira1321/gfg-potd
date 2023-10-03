@@ -8,7 +8,8 @@ using namespace std;
 class Solution{
     public:
     string colName (long long int n)
-    {   string ans;
+    {
+     string ans;
         while(n > 0) {
             n--;
             int curr = n % 26;
