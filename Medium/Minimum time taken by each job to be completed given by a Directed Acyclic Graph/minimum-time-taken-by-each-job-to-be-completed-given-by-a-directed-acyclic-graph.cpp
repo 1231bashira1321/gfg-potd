@@ -9,6 +9,7 @@ using namespace std;
 
 class Solution{
     public:
+        //the tasks can never be completed if cycle exits in the graph
         vector<int> minimumTime(int n,vector<vector<int>> &edges,int m)
         {//converting into ajacency list
         vector<vector<int>> adj(n+1);
@@ -43,7 +44,6 @@ class Solution{
              
          }
          return jobs;
-         
         }
 };
 
