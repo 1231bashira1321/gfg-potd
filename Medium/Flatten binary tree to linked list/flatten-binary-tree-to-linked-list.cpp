@@ -97,24 +97,23 @@ void inorder(struct Node* root)
 //User function Template for C++
 
 class Solution
-{   
-    void in_order(Node* root,vector<Node*> &inorder){
-        if(root==NULL){return;}
-        inorder.push_back(root);
-        in_order(root->left,inorder);
-        in_order(root->right,inorder);
-    }
-
+{   //using morris traversal
     public:
     void flatten(Node *root)
-    {
-    vector<Node*> inorder;
-     in_order(root,inorder);
-     int n=inorder.size();
-     for(int i=0;i<n-1;i++){
-         inorder[i]->left=NULL;
-         inorder[i]->right=inorder[i+1];
-    }
+    { Node *curr=root;
+      while(curr!=NULL){
+         if(curr->left !=NULL){
+            Node *prev=curr->left;
+            while(prev->right !=NULL){
+                prev=prev->right;
+            }
+            prev->right=curr->right;
+            curr->right=curr->left;
+            curr->left=NULL;
+         } 
+         curr=curr->right;
+      }
+    
     }
 };
 
