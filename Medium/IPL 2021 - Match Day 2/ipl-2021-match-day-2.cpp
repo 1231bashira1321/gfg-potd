@@ -8,26 +8,20 @@ class Solution {
   public:
     vector<int> max_of_subarrays(vector<int> arr, int n, int k) {
      vector<int> ans;
-     deque<int> dq;
+     priority_queue<pair<int,int>> heap;
      for(int i=0;i<k;i++){
-         while (!dq.empty() && arr[dq.back()]<=arr[i]){
-             dq.pop_back();
-         }
-         dq.push_back(i);
+         heap.push({arr[i],i});
      }
+     ans.push_back(heap.top().first);
      for(int i=k;i<n;i++){
-      ans.push_back(arr[dq.front()]);
-      while (!dq.empty() && arr[dq.back()]<=arr[i]){
-             dq.pop_back();
+         //remove elements from previous window
+         while(!heap.empty() && heap.top().second<=i-k){
+             heap.pop();
          }
-         dq.push_back(i);
-      while (!dq.empty() && dq.front()<=i-k){
-             dq.pop_front();
-         }}
-         
-    ans.push_back(arr[dq.front()]);
-    return ans;
-    
+         heap.push({arr[i],i});
+         ans.push_back(heap.top().first);
+     }
+     return ans;
     }
 };
 
