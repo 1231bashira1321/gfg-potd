@@ -30,12 +30,12 @@ class Solution
     
     public:
     int partition (int arr[], int low, int high)
-    {int pivot=arr[low];
+    {int pivot=low;
      int i=low;
      int j=high;
      while(i<j){
-      while(i<high && pivot>=arr[i]){i++;}
-      while(j>=low && pivot<arr[j]){j--;}
+      while(arr[pivot]>=arr[i]){i++;}
+      while(arr[pivot]<arr[j]){j--;}
       if(i<j) {swap(arr[i],arr[j]);}
      }
     swap(arr[j],arr[low]);
