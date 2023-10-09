@@ -8,7 +8,7 @@ public:
 	bool isPossible(int N,int P, vector<pair<int, int> >& prerequisites) {
 	 vector<vector<int>> adj(N);
         for(auto it : prerequisites){
-            adj[it.first].push_back(it.second);
+            adj[it.second].push_back(it.first);
         }
 	 int indegree[N]={0};
       for(int i=0;i<N;i++){
