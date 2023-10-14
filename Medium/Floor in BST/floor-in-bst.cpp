@@ -22,28 +22,12 @@ class Solution{
 
 public:
     int floor(Node* root, int x) {
-      int ans  = INT_MAX;
-        int val = -1;
-        while(root)
-        {
-            if(root->data == x) return x;
-            else if(root->data > x)
-            {
-                root = root->left;
-            }
-            else 
-            {
-                int diff = x - root->data;
-                if(ans > diff)
-                {
-                    ans = diff;
-                    val = root->data;
-                }
-                root = root->right;
-                
-            }
-        }
-        return val;
+     if(root==NULL){return -1;}
+     if(root->data<=x){
+        int ans=floor(root->right,x);
+        if (ans !=-1){return ans;}
+        return root->data;}
+     return floor(root->left,x);
     }
 };
 
