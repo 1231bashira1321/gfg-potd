@@ -3,74 +3,49 @@
 using namespace std;
 
 // } Driver Code Ends
-
 class Solution
-{   int get_parent(int x,int parent[]){
-	  if (parent[x]==x){return x;}
-	  else{
-	      parent[x]=get_parent(parent[x],parent);
-	      return parent[x];
-	  }
-	}
-	
-	void Union(int p1,int p2,int rank[],int parent[]){
-	  if (rank[p1]>rank[p2]){
-	      parent[p2]=p1;
-	  }
-	  else if(rank[p2]>rank[p1]){
-	      parent[p1]=p2;
-	  }
-	  else{
-	      parent[p1]=p2;
-	      rank[p2]++;
-	  }
-	}
-	
+{   void Union(int pu,int pv,vector<int> & rank,vector<int> &parent){
+    if(rank[pu]>rank[pv]){
+        parent[pv]=pu;}
+    else if(rank[pu]<rank[pv]){
+        parent[pu]=pv;}
+    else{parent[pu]=pv;
+         rank[pv]++;}}
+         
+    int get_parent(int x,vector<int> &parent){
+        if(parent[x]==x){return x;}
+        parent[x]=get_parent(parent[x],parent);
+        return parent[x];
+    }
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
-    int spanningTree(int V, vector<vector<int>> adj[]){
-     int* parent=new int[V];
-     int* rank=new int[V];
-      for(int i=0;i<V;i++){
-          rank[i]=0;
-          parent[i]=i;}
-      vector<pair<int,pair<int,int>>> edges;
-      for(int i=0;i<V;i++){
-        for(int j=0;j<adj[i].size();j++){
-            int u=i;
-            int v=adj[i][j][0];
-            int wt=adj[i][j][1];
-            edges.push_back({wt,{u,v}});
-        }
-      }
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+     vector<pair<int,pair<int,int>>> edges;
+     for (int i=0;i<V;i++){
+         for(auto neigh : adj[i]){
+             edges.push_back({neigh[1],{i,neigh[0]}});
+         }
+     }
+     
+     vector<int> parent(V);
+     for(int i=0;i<V;i++){parent[i]=i;}
+     vector<int> rank(V,0);
+     
      sort(edges.begin(),edges.end());
-     int index=0;
-     int mst_wt=0;
-     while(index !=edges.size()){
-        int wt=edges[index].first;
-        int u=edges[index].second.first;
-        int v=edges[index].second.second;
-        int pu=get_parent(u,parent);
-        int pv=get_parent(v,parent);
-        if(pu !=pv){
-         mst_wt+=wt;
-         Union(pu,pv,rank,parent);
-        }
-        // if(pu !=pv){
-        //  mst_wt+=wt;
-        //  if (rank[pu]==rank[pv]){
-        //      parent[pv]==pu;
-        //      pu++;}
-        //  else if(rank[pu]>rank[pv]){
-        //      parent[pv]=pu;}
-        //  else{parent[pu]=pv;}
-        // }
-        index++;}
-        
-    //  deallocation
-     delete []parent;
-     delete []rank;
-     return mst_wt;
+     int mst=0;
+     for(int i=0;i<edges.size();i++){
+       int wt=edges[i].first;
+       int u=edges[i].second.first;
+       int v=edges[i].second.second;
+       int pu=get_parent(u,parent);
+       int pv=get_parent(v,parent);
+       //discard the edge if form cycle
+       if(pu!=pv){
+        mst+=wt;
+        Union(pu,pv,rank,parent);}
+     }
+     return mst;
     }
 };
 
