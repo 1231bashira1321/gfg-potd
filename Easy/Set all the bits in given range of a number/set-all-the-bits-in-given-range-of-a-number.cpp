@@ -6,10 +6,10 @@ using namespace std;
 class Solution {
   public:
     int setAllRangeBits(int N , int L , int R) {
-     for(int i=L;i<=R;i++){
-         N=N | (1<<i-1);
-     }
-     return N;
+    for(int i=L-1;i<=R-1;i++){
+        N=N | (1<<i);
+    }
+    return N;
     }
 };
 
