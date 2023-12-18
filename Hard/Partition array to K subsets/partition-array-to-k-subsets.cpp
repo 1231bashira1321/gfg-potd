@@ -14,7 +14,7 @@ class Solution{
         }
         if(i==size){return false;}
         bool take=false;
-        if(arr[i]<=target && !check[i]){
+         if (! (check[i] || arr[i] > target || (i > 0 && arr[i] == arr[i-1] && !check[i-1]) ) ){
          check[i]=1;
          take=backtrack(arr,check,i+1,target-arr[i],k,OGtarget,size);
          check[i]=0;
