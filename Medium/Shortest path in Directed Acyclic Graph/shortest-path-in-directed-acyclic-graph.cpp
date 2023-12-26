@@ -7,39 +7,37 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 class Solution {
-    void dfs(int N,int M, vector<vector<int>>& edges,vector<int> &visited,stack<int> &st){
-        visited[N]=1;
-        for(auto it : edges){
-            if(it[0]==N && !visited[it[1]]){
-                dfs(it[1],M,edges,visited,st);
-            }
-        }
-        st.push(N);
-    }
   public:
      vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
-     //create toposort
-     stack<int> st;
-     vector<int> visited(N,0);
-     //for disconnected graph
-     for(int i=0;i<N;i++){
-         if(!visited[i]){
-      dfs(i,M,edges,visited,st);}   
-     }
+      vector<vector<pair<int,int>>> adj(N);
+        for(int i=0;i<edges.size();i++){
+          int u=edges[i][0];
+          int v=edges[i][1];
+          int wt=edges[i][2];
+          adj[u].push_back({v,wt});
+        }
+     priority_queue<pair<int,int>,vector<pair<int,int>> ,greater<pair<int,int>>> pq;
      vector<int> dist(N,1e9);
      dist[0]=0;
-     while (!st.empty()){
-         int node=st.top();
-         st.pop();
-         for(auto it : edges){
-            if(it[0]==node && dist[it[1]]>dist[node]+it[2]){
-               dist[it[1]]=dist[node]+it[2];
-            }
-        }
+     pq.push({dist[0],0}); // dist,node
+     while(!pq.empty()){
+         int d=pq.top().first;
+         int s=pq.top().second;
+         pq.pop();
+         for(auto it : adj[s]){
+             int v=it.first;
+             int wt=it.second;
+             if(dist[v] >wt+d){
+                 dist[v]=wt+d;
+                 pq.push({dist[v],v});
+             }
+             
+         }
+        
      }
-     
      for(int i=0;i<N;i++){
-         if(dist[i]==1e9){dist[i]=-1;}}
+         if(dist[i]==1e9){dist[i]=-1;}
+     }
      return dist;
     }
 };
