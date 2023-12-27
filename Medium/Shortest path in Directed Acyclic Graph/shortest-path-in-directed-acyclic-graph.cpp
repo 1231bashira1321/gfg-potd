@@ -9,36 +9,22 @@ using namespace std;
 class Solution {
   public:
      vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
-      vector<vector<pair<int,int>>> adj(N);
-        for(int i=0;i<edges.size();i++){
-          int u=edges[i][0];
-          int v=edges[i][1];
-          int wt=edges[i][2];
-          adj[u].push_back({v,wt});
-        }
-     priority_queue<pair<int,int>,vector<pair<int,int>> ,greater<pair<int,int>>> pq;
-     vector<int> dist(N,1e9);
-     dist[0]=0;
-     pq.push({dist[0],0}); // dist,node
-     while(!pq.empty()){
-         int d=pq.top().first;
-         int s=pq.top().second;
-         pq.pop();
-         for(auto it : adj[s]){
-             int v=it.first;
-             int wt=it.second;
-             if(dist[v] >wt+d){
-                 dist[v]=wt+d;
-                 pq.push({dist[v],v});
-             }
-             
-         }
-        
-     }
-     for(int i=0;i<N;i++){
-         if(dist[i]==1e9){dist[i]=-1;}
-     }
-     return dist;
+     vector<int> dis(N,1e8);
+     dis[0]=0;
+	 for(int i=0;i<N;i++){
+	  for(auto it: edges){
+	      int u=it[0];
+	      int v=it[1];
+	      int wt=it[2];
+	      if(dis[v]>dis[u]+wt){
+	       dis[v]=dis[u]+wt;  
+	      }
+	  }
+	 }
+	 for(int i=0;i<N;i++){
+	     if(dis[i]==1e8){dis[i]=-1;}
+	 }
+	 return dis;
     }
 };
 
