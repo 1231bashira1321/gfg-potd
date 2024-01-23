@@ -9,34 +9,44 @@ class Solution
 {
   public:
     vector<int> findOrder(int n, int m, vector<vector<int>> prerequisites) 
-    {vector<int> ans;
-     vector<vector<int>> adj(n);
-        for(auto it : prerequisites){
-            adj[it[1]].push_back(it[0]);
-        }
-	 int indegree[n]={0};
-      for(int i=0;i<n;i++){
-       for(auto it : adj[i]){
-           indegree[it]++;
-       }  
-      }
-       queue<int> q;
-      for(int i=0;i<n;i++){
-          if(indegree[i]==0){q.push(i);}
-      }
+    {
+     vector<vector<int>> graph(n);
+     for(auto it : prerequisites ){
+         graph[it[1]].push_back(it[0]);
+     }
+     
+     vector<int> indegree(n,0);
+     for(int i=0;i<n;i++){
+         for(auto neigh : graph[i]){
+             indegree[neigh]++;
+         }
+     }
+     queue<int> q;
+     for(int i=0;i<n;i++){
+         if(indegree[i]==0){
+             q.push(i);
+         }
+     }
+     
+     vector<int> ans;
      int v=0;
      while(!q.empty()){
-      int x=q.front();
-      ans.push_back(x);
-      q.pop();
-      v++;
-      for(auto it : adj[x]){
-          indegree[it]--;
-           if(indegree[it]==0){q.push(it);}
-      }
+         int node=q.front();
+         q.pop();
+         ans.push_back(node);
+         v++;
+         for(auto neigh : graph[node]){
+             indegree[neigh]--;
+             if(indegree[neigh]==0){
+                 q.push(neigh);
+             }
+         }
+         
      }
+     
      if(v<n){return {};}
-      return ans;
+     return ans;
+     
     }
 };
 
