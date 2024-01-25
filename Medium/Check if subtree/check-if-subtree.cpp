@@ -100,7 +100,7 @@ class Solution
       if(root==NULL){return "NULL";}
       string leftsubtree=solve1(root->left);
       string rightsubtree=solve1(root->right);
-      return to_string(root->data+'0')+'L'+leftsubtree+'R'+rightsubtree;
+      return to_string(root->data)+'L'+leftsubtree+'R'+rightsubtree;
   }
   
   string solve2(Node* root,string subtree,bool& ans){
@@ -108,7 +108,7 @@ class Solution
       string leftsubtree=solve2(root->left,subtree,ans);
       string rightsubtree=solve2(root->right,subtree,ans);
       if(ans==true){return leftsubtree;}
-      string newSubtree=to_string(root->data+'0')+'L'+leftsubtree+'R'+rightsubtree;
+      string newSubtree=to_string(root->data)+'L'+leftsubtree+'R'+rightsubtree;
       if(newSubtree==subtree){
           ans=true;
       }
