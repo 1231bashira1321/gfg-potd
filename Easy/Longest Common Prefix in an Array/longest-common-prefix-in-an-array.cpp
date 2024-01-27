@@ -11,23 +11,33 @@ class Solution{
   public:
     
     string longestCommonPrefix (string arr[], int N)
-    { //brute force method
-      string temp;
-      temp=arr[0];
-      for(int i=1;i<N;i++){
-       //compare strings
-       int j=0;
-       string s;
-        for(j=0;j<min(temp.length(),arr[i].length());j++){
-            if(temp[j] !=arr[i][j]){break;}
-            s+=temp[j];
-        }
-        temp=s;
-        if(j==0){return "-1";}
-      }
-     if (temp.size()==0){return "-1";}
-     return temp;
+    {
+     string lcp=arr[0];
+     int len=arr[0].length();
      
+     for(int i=1;i<N;i++){
+        if(arr[i].length()<len){
+            len=arr[i].length();
+            lcp=arr[i];
+        }
+     }
+     
+     for(int i=0;i<N;i++){
+         int j=0;
+         while(j<len){
+            if(arr[i][j] !=lcp[j]){ break; }
+            j++;
+         }
+         if(j==0){return "-1";}
+         if(j !=len){
+             lcp=lcp.substr(0,j);
+             len=j;
+         }
+     }
+     
+     
+     
+     return lcp;
     }
 };
 
