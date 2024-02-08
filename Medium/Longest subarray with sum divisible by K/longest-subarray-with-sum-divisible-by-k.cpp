@@ -9,24 +9,30 @@ class Solution{
 public:	
 	int longSubarrWthSumDivByK(int arr[], int n, int k)
 	{
-	  unordered_map<int,int> mp;
-	  int sum=0;
-	  int len=0;
-	  for(int i=0;i<n;i++){
-	      sum+=arr[i];
-	      int rem=sum % k;
-	      if(rem==0){
-	          len=max(len,i+1);
-	      } else if (rem<0){
-	          rem+=k;
-	      }
-	      if( mp.find(rem) !=mp.end() ){
-	           len=max(len,i-mp[rem]);
-	      } else{
-	           mp[rem]=i;
-	      }
+	  vector<int>prefix(n,0);
+	  unordered_map<int,int>mp;
+	  int ans=0;
+	  prefix[0]=arr[0];
+	  
+	  for(int i=1;i<n;i++){
+	     prefix[i]=prefix[i-1]+arr[i];
 	  }
-	  return len;
+	  
+	  for(int i=0;i<n;i++){
+	     int rem=prefix[i] % k;
+	     
+	     if( rem==0 ){ ans=max(ans,i+1); }
+	     
+	     else if (rem<0){ rem+=k; }
+	     
+	     if ( mp.find(rem) !=mp.end()){
+	         ans=max(ans,i-mp[rem]);
+	     }
+	     else{
+	         mp[rem]=i;
+	     }
+	  }
+	  return ans;
 	}
 };
 
